@@ -1,0 +1,27 @@
+name: Bug Report
+description: Something broke? Tell us.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      placeholder: Steps, expected vs actual, screenshots
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: URL / Route
+      placeholder: e.g. /analytics on iPhone 14, Chrome 126
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      placeholder: "1. Go to ... 2. Tap ..."
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options: [low, medium, high, critical]
+      default: 0

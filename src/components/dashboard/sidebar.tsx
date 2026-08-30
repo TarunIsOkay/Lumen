@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, ArrowLeftRight, PieChart, Wallet, Target, Sparkles, Settings,
-  LogOut, Menu, X, Home,
+  LogOut, Menu, X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Logo } from "@/components/ui/logo";

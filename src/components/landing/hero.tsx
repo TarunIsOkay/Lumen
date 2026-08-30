@@ -82,15 +82,15 @@ export function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45, duration: 0.6 }}
-          className="mt-8 flex flex-col items-center gap-3 sm:flex-row"
+          className="mt-8 flex w-full flex-col items-center gap-3 px-4 sm:w-auto sm:flex-row sm:px-0"
         >
-          <Link href="/signup">
-            <Button size="lg" className="w-full sm:w-auto">
+          <Link href="/signup" className="w-full sm:w-auto">
+            <Button size="lg" className="w-full sm:w-auto h-12 text-[15px]">
               Start free <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
           <Link href="/login" className="w-full sm:w-auto">
-            <Button size="lg" variant="outline" className="w-full sm:w-auto">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 text-[15px]">
               <Sparkles className="h-4 w-4 text-accent" />
               Try the live demo
             </Button>
@@ -164,25 +164,25 @@ function DashboardPreview() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 p-5 lg:grid-cols-3">
-          <div className="space-y-3 lg:col-span-2">
-            <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-3 p-4 sm:gap-4 sm:p-5 lg:grid-cols-3">
+          <div className="space-y-3 lg:col-span-2 min-w-0">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
               <MiniStat label="Income" value={formatCurrency(totals.income, currency, { compact: true })} tone="#10b981" />
               <MiniStat label="Spending" value={formatCurrency(totals.expenses, currency, { compact: true })} tone="#f43f5e" />
               <MiniStat label="Net" value={formatCurrency(totals.net, currency, { compact: true })} tone="#8b5cf6" />
             </div>
-            <div className="rounded-2xl border border-border bg-surface p-4">
+            <div className="min-w-0 rounded-2xl border border-border bg-surface p-3 sm:p-4 overflow-hidden">
               <p className="mb-2 text-xs font-semibold text-muted">Cash flow — last 6 months</p>
               <CashflowChart data={trend} currency={currency} height={190} />
             </div>
           </div>
 
-          <div className="space-y-3">
-            <div className="rounded-2xl border border-border bg-surface p-4">
+          <div className="space-y-3 min-w-0">
+            <div className="rounded-2xl border border-border bg-surface p-3 sm:p-4 overflow-hidden">
               <p className="mb-1 text-xs font-semibold text-muted">Where it goes</p>
               <CategoryDonut data={cats.map((c) => ({ name: c.name, value: c.amount, color: c.color }))} currency={currency} height={150} centerLabel="Spent" />
             </div>
-            <div className="rounded-2xl border border-border bg-surface p-4">
+            <div className="rounded-2xl border border-border bg-surface p-3 sm:p-4">
               <p className="mb-2 text-xs font-semibold text-muted">Recent</p>
               <div className="space-y-1.5">
                 {demo.transactions.filter((t) => t.date.startsWith(month)).slice(0, 3).map((t) => (
@@ -239,9 +239,9 @@ function DashboardPreview() {
 
 function MiniStat({ label, value, tone }: { label: string; value: string; tone: string }) {
   return (
-    <div className="rounded-2xl border border-border bg-surface p-3.5">
-      <p className="text-[10px] font-medium uppercase tracking-wider text-muted">{label}</p>
-      <p className="mt-1 font-display text-lg font-semibold tabular-nums" style={{ color: tone }}>
+    <div className="rounded-2xl border border-border bg-surface p-2.5 sm:p-3.5 min-w-0">
+      <p className="text-[9px] sm:text-[10px] font-medium uppercase tracking-wider text-muted truncate">{label}</p>
+      <p className="mt-1 font-display text-[15px] sm:text-lg font-semibold tabular-nums truncate" style={{ color: tone }}>
         {value}
       </p>
     </div>

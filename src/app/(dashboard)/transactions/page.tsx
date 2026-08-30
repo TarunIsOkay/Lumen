@@ -134,14 +134,14 @@ export default function TransactionsPage() {
         }
       />
 
-      <div className="mb-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="relative">
+      <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="relative sm:col-span-2 lg:col-span-1">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <Input
             placeholder="Search merchants or notes…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="pl-10"
+            className="pl-10 h-11"
           />
         </div>
         <Segmented
@@ -152,9 +152,9 @@ export default function TransactionsPage() {
           ]}
           value={type}
           onChange={setType}
-          className="w-full [&>button]:flex-1"
+          className="w-full [&>button]:flex-1 min-h-[44px]"
         />
-        <Select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <Select value={category} onChange={(e) => setCategory(e.target.value)} className="h-11">
           <option value="all">All categories</option>
           {CATEGORIES.map((c) => (
             <option key={c.id} value={c.id}>
@@ -162,8 +162,8 @@ export default function TransactionsPage() {
             </option>
           ))}
         </Select>
-        <div className="flex gap-2.5">
-          <Select value={month} onChange={(e) => setMonth(e.target.value)} className="flex-1">
+        <div className="flex gap-2 sm:col-span-2 lg:col-span-1">
+          <Select value={month} onChange={(e) => setMonth(e.target.value)} className="flex-1 h-11">
             <option value="all">All months</option>
             {months.map((m) => (
               <option key={m} value={m}>
@@ -171,7 +171,7 @@ export default function TransactionsPage() {
               </option>
             ))}
           </Select>
-          <Select value={sort} onChange={(e) => setSort(e.target.value as SortKey)} className="flex-1">
+          <Select value={sort} onChange={(e) => setSort(e.target.value as SortKey)} className="flex-1 h-11">
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
             <option value="amount-desc">Amount ↓</option>

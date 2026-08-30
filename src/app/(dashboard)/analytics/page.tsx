@@ -43,7 +43,7 @@ export default function AnalyticsPage() {
         title="Analytics"
         description="Dig into where your money goes."
         action={
-          <div className="flex items-center gap-2">
+          <div className="flex w-full sm:w-auto flex-wrap items-center gap-2">
             <Segmented
               options={[
                 { value: "6m", label: "6 months" },
@@ -51,8 +51,9 @@ export default function AnalyticsPage() {
               ]}
               value={range}
               onChange={setRange}
+              className="[&>button]:flex-1 sm:[&>button]:flex-none"
             />
-            <Select value={month} onChange={(e) => setMonth(e.target.value)} className="w-36">
+            <Select value={month} onChange={(e) => setMonth(e.target.value)} className="w-full sm:w-36 h-11 sm:h-10 flex-1 sm:flex-none min-w-[140px]">
               {months.map((m) => (
                 <option key={m} value={m}>
                   {monthKeyFullLabel(m)}

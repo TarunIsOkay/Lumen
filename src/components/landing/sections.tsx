@@ -18,8 +18,8 @@ export function Section({
   className?: string;
 }) {
   return (
-    <section id={id} className={`relative mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:py-28 ${className}`}>
-      <div className="mx-auto mb-12 max-w-2xl text-center lg:mb-16">
+    <section id={id} className={`relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:py-28 ${className}`}>
+      <div className="mx-auto mb-10 max-w-2xl text-center sm:mb-12 lg:mb-16">
         {eyebrow && (
           <Reveal>
             <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">

@@ -6,7 +6,7 @@ import { ArrowRight, Sparkles, Github, Mail, Phone } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/primitives";
 
-const REPO = "https://github.com/singhtarunpreet823-ai/lumen";
+const REPO = "https://github.com/TarunIsOkay/Lumen";
 
 export function CTA() {
   return (
@@ -64,9 +64,9 @@ export function CTA() {
 export function Footer() {
   return (
     <footer className="border-t border-border bg-surface/40">
-      <div className="mx-auto w-full max-w-6xl px-4 py-14">
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-5">
-          <div className="col-span-2">
+      <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:py-14">
+        <div className="grid grid-cols-2 gap-8 sm:gap-10 md:grid-cols-5">
+          <div className="col-span-2 md:col-span-2">
             <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
               Understand your money. Build your future. A calm, modern personal-finance dashboard with an AI copilot.

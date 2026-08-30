@@ -83,16 +83,16 @@ export default function BudgetsPage() {
         title="Budgets"
         description={`Monthly limits that keep you honest — ${overCount > 0 ? `${overCount} exceeded` : warningCount > 0 ? `${warningCount} close to the line` : "all on track"} this month.`}
         action={
-          <div className="flex items-center gap-2">
-            <Select value={month} onChange={(e) => setMonth(e.target.value)} className="w-36">
+          <div className="flex w-full sm:w-auto items-center gap-2">
+            <Select value={month} onChange={(e) => setMonth(e.target.value)} className="flex-1 sm:flex-none sm:w-36 h-11 sm:h-10">
               {months.map((m) => (
                 <option key={m} value={m}>
                   {monthKeyFullLabel(m)}
                 </option>
               ))}
             </Select>
-            <Button onClick={openAdd}>
-              <Plus className="h-4 w-4" /> Add budget
+            <Button onClick={openAdd} className="shrink-0 h-11 sm:h-10">
+              <Plus className="h-4 w-4" /> <span className="hidden xs:inline">Add</span> <span className="xs:hidden">New</span>
             </Button>
           </div>
         }
@@ -191,7 +191,7 @@ export default function BudgetsPage() {
                         ? `${formatCurrency(-s.remaining, currency)} over`
                         : `${formatCurrency(s.remaining, currency)} left`}
                     </span>
-                    <div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                    <div className="flex gap-1 opacity-60 lg:opacity-0 transition-opacity lg:group-hover:opacity-100">
                       <button
                         onClick={() => openEdit(s.budget.categoryId, s.budget.amount)}
                         aria-label={`Edit ${cat.name} budget`}

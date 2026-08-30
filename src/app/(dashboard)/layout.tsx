@@ -35,13 +35,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div id="main" className="flex min-h-screen bg-bg">
       <Sidebar />
       <SiteSearch />
-      <main className="relative min-w-0 flex-1 pb-20 lg:pb-0">
+      <main className="relative min-w-0 flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-0 overflow-x-hidden">
         <motion.div
           key={pathname}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
-          className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8"
+          className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8 min-w-0"
         >
           {children}
         </motion.div>

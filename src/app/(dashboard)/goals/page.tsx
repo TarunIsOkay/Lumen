@@ -97,7 +97,7 @@ const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } 
         title="Savings goals"
         description={`${formatCurrency(totalSaved, currency)} saved across ${goals.length || "no"} goals · ${avgPct}% complete on average`}
         action={
-          <Button onClick={() => setCreateOpen(true)}>
+          <Button onClick={() => setCreateOpen(true)} className="w-full sm:w-auto h-11 sm:h-10 justify-center">
             <Plus className="h-4 w-4" /> New goal
           </Button>
         }
@@ -150,7 +150,7 @@ const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } 
                   <button
                     onClick={() => setPendingDelete({ id: g.id, name: g.name })}
                     aria-label={`Delete ${g.name}`}
-                    className="rounded-lg p-1.5 text-muted opacity-0 transition-all hover:bg-surface-2 hover:text-expense group-hover:opacity-100 cursor-pointer"
+                    className="rounded-lg p-2 text-muted opacity-60 lg:opacity-0 transition-all hover:bg-surface-2 hover:text-expense lg:group-hover:opacity-100 active:bg-surface-2 cursor-pointer"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>

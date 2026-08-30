@@ -60,7 +60,7 @@ export default function DashboardPage() {
         title={`${greeting()}, ${profile?.name?.split(" ")[0] ?? "there"} 👋`}
         description={`Here's your ${monthKeyLabel(month)} snapshot.`}
         action={
-          <Button onClick={() => setFormOpen(true)}>
+          <Button onClick={() => setFormOpen(true)} className="w-full sm:w-auto h-11 sm:h-10 justify-center">
             <Plus className="h-4 w-4" /> Add transaction
           </Button>
         }

@@ -116,7 +116,7 @@ export default function CopilotPage() {
         title="AI Financial Copilot"
         description="Ask anything about your money — it answers with your real data and the charts to prove it."
         action={
-          <Button variant="outline" onClick={reset}>
+          <Button variant="outline" onClick={reset} className="w-full sm:w-auto h-11 sm:h-10">
             <RotateCcw className="h-4 w-4" /> New chat
           </Button>
         }
@@ -125,21 +125,21 @@ export default function CopilotPage() {
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
         {/* Chat column */}
         <Card className="flex flex-col overflow-hidden xl:col-span-2" >
-          <div className="flex items-center gap-3 border-b border-border px-5 py-4">
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-violet-600 text-white">
-              <Sparkles className="h-5 w-5" />
+          <div className="flex items-center gap-3 border-b border-border px-4 py-3.5 sm:px-5 sm:py-4">
+            <div className="relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-violet-600 text-white shrink-0">
+              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
               <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-surface bg-income" />
             </div>
-            <div>
-              <p className="font-display text-sm font-semibold text-ink">Lumen Copilot</p>
-              <p className="flex items-center gap-1.5 text-xs text-muted">
-                <span className="h-1.5 w-1.5 rounded-full bg-income" />
-                Online · analyzing {data.transactions.length} transactions
+            <div className="min-w-0">
+              <p className="font-display text-sm font-semibold text-ink truncate">Lumen Copilot</p>
+              <p className="flex items-center gap-1.5 text-xs text-muted truncate">
+                <span className="h-1.5 w-1.5 rounded-full bg-income shrink-0" />
+                Online · {data.transactions.length} transactions
               </p>
             </div>
           </div>
 
-          <div ref={scrollRef} className="flex-1 space-y-5 overflow-y-auto p-5" style={{ minHeight: 420, maxHeight: "calc(100vh - 380px)" }}>
+          <div ref={scrollRef} className="flex-1 space-y-5 overflow-y-auto overflow-x-hidden p-4 sm:p-5" style={{ minHeight: 320, maxHeight: "min(60vh, 520px)" }}>
             {messages.map((m) => (
               <MessageBubble key={m.id} message={m} currency={currency} theme={theme} />
             ))}
@@ -270,7 +270,7 @@ function MessageBubble({ message, currency, theme }: { message: Message; currenc
           ))}
         </div>
         {message.chart && !isUser && (
-          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="w-full min-w-[300px] max-w-md">
+          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-full sm:min-w-[300px] sm:max-w-md min-w-0">
             <CopilotChartCard chart={message.chart} currency={currency} theme={theme} />
           </motion.div>
         )}

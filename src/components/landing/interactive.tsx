@@ -68,15 +68,15 @@ export function InteractiveDemo() {
     >
       <div className="mx-auto max-w-4xl">
         <div className="glass-strong overflow-hidden rounded-3xl shadow-glass">
-          <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
-            <div className="no-scrollbar flex gap-1 overflow-x-auto">
+          <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-3 sm:px-4">
+            <div className="no-scrollbar flex gap-1 overflow-x-auto scroll-smooth snap-x pr-2 -mx-1 px-1">
               {TABS.map((t) => (
                 <button
                   key={t.id}
                   onClick={() => setTab(t.id)}
                   className={cn(
-                    "flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all cursor-pointer",
-                    tab === t.id ? "bg-primary/15 text-primary" : "text-muted hover:bg-surface-2 hover:text-ink",
+                    "flex shrink-0 snap-start items-center gap-1.5 rounded-lg px-3 py-2.5 text-xs font-medium transition-all cursor-pointer min-h-[36px]",
+                    tab === t.id ? "bg-primary/15 text-primary" : "text-muted hover:bg-surface-2 hover:text-ink active:bg-surface-2",
                   )}
                 >
                   <t.icon className="h-3.5 w-3.5" />
@@ -84,8 +84,8 @@ export function InteractiveDemo() {
                 </button>
               ))}
             </div>
-            <span className="hidden rounded-full bg-income/10 px-2.5 py-1 text-[10px] font-semibold text-income sm:block">
-              Live demo data
+            <span className="hidden shrink-0 rounded-full bg-income/10 px-2.5 py-1 text-[10px] font-semibold text-income sm:block">
+              Live demo
             </span>
           </div>
 
@@ -252,13 +252,13 @@ export function InteractiveDemo() {
                 onChange={(e) => setMerchant(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && addExpense()}
                 placeholder="Add a real expense, e.g. “Starbucks”"
-                className="h-10 flex-1 rounded-xl border border-border bg-surface px-3.5 text-xs outline-none transition-colors focus:border-primary/60"
+                className="h-11 flex-1 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none transition-colors focus:border-primary/60 min-w-0"
               />
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full sm:w-auto">
                 <select
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="h-10 w-24 rounded-xl border border-border bg-surface px-2 text-xs outline-none"
+                  className="h-11 flex-1 sm:w-28 rounded-xl border border-border bg-surface px-2.5 text-sm outline-none min-w-0"
                 >
                   <option value="">Amount</option>
                   {["8.5", "14", "25", "48", "90"].map((a) => (
@@ -269,7 +269,7 @@ export function InteractiveDemo() {
                 </select>
                 <button
                   onClick={addExpense}
-                  className="flex h-10 items-center gap-1.5 rounded-xl bg-primary px-4 text-xs font-medium text-white transition-transform active:scale-95 cursor-pointer"
+                  className="flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-primary px-5 text-sm font-medium text-white transition-transform active:scale-95 cursor-pointer"
                 >
                   <Plus className="h-3.5 w-3.5" /> Add
                 </button>

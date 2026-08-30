@@ -1,0 +1,24 @@
+name: Feature Request
+description: Have an idea? Pitch it.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What job is not getting done?
+      placeholder: As a user I want ...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      placeholder: API, UI sketch, alternative approaches
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues / discussions
+          required: true

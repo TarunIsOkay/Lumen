@@ -109,12 +109,12 @@ export function PageHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-      <div>
-        <h1 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">{title}</h1>
-        {description && <p className="mt-1 text-sm text-muted">{description}</p>}
+    <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+      <div className="min-w-0">
+        <h1 className="font-display text-xl font-semibold tracking-tight text-ink sm:text-3xl">{title}</h1>
+        {description && <p className="mt-1.5 text-sm leading-relaxed text-muted">{description}</p>}
       </div>
-      {action && <div className="flex items-center gap-2">{action}</div>}
+      {action && <div className="flex flex-wrap items-center gap-2 sm:shrink-0 sm:justify-end">{action}</div>}
     </div>
   );
 }
@@ -155,7 +155,7 @@ export function TransactionRow({
         {onEdit && (
           <button
             onClick={() => onEdit(tx)}
-            className="rounded-lg p-2 text-muted opacity-0 transition-all hover:bg-surface-2 hover:text-ink group-hover:opacity-100 cursor-pointer"
+            className="rounded-lg p-2 text-muted opacity-60 lg:opacity-0 transition-all hover:bg-surface-2 hover:text-ink lg:group-hover:opacity-100 active:bg-surface-2 cursor-pointer"
             aria-label={`Edit ${tx.merchant}`}
           >
             <EditIcon />
@@ -164,7 +164,7 @@ export function TransactionRow({
         {onDelete && (
           <button
             onClick={() => onDelete(tx)}
-            className="rounded-lg p-2 text-muted opacity-0 transition-all hover:bg-surface-2 hover:text-expense group-hover:opacity-100 cursor-pointer"
+            className="rounded-lg p-2 text-muted opacity-60 lg:opacity-0 transition-all hover:bg-surface-2 hover:text-expense lg:group-hover:opacity-100 active:bg-surface-2 cursor-pointer"
             aria-label={`Delete ${tx.merchant}`}
           >
             <TrashIcon />
