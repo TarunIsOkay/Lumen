@@ -7,7 +7,7 @@ import {
   LayoutDashboard, ArrowLeftRight, PieChart, Wallet, Target, Sparkles, Settings,
   LogOut, Menu, X, Home,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Logo } from "@/components/ui/logo";
 import { Avatar } from "@/components/ui/primitives";
 import { useLumen, useProfile } from "@/lib/store";
@@ -42,6 +42,31 @@ export function Sidebar() {
     resetAll();
     router.push("/login");
   };
+
+  // Close drawer on route change
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll + Escape + auto-close when switching to desktop
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const onResize = () => {
+      if (window.innerWidth >= 1024) setOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [open]);
 
   return (
     <>
@@ -80,13 +105,17 @@ export function Sidebar() {
       </aside>
 
       {/* Mobile top bar */}
-      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-surface/70 px-4 py-3 backdrop-blur-xl lg:hidden">
-        <Logo />
+      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-surface/80 px-4 py-3 backdrop-blur-xl lg:hidden">
+        <Link href="/dashboard" aria-label="Go to dashboard">
+          <Logo />
+        </Link>
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <button
             onClick={() => setOpen(true)}
             aria-label="Open menu"
+            aria-expanded={open}
+            aria-controls="dashboard-mobile-drawer"
             className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface-2 cursor-pointer"
           >
             <Menu className="h-4 w-4" />
@@ -104,15 +133,20 @@ export function Sidebar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
+              aria-hidden="true"
             />
             <motion.div
-              className="fixed inset-y-0 right-0 z-50 flex w-72 max-w-[85vw] flex-col gap-1 border-l border-border bg-surface p-4 lg:hidden"
+              id="dashboard-mobile-drawer"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation menu"
+              className="fixed inset-y-0 right-0 z-50 flex w-72 max-w-[85vw] flex-col gap-1 overflow-y-auto border-l border-border bg-surface p-4 pb-[env(safe-area-inset-bottom)] lg:hidden"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
             >
-              <div className="mb-4 flex items-center justify-between px-2">
+              <div className="mb-2 flex items-center justify-between px-2">
                 <Logo />
                 <button
                   onClick={() => setOpen(false)}
@@ -122,7 +156,10 @@ export function Sidebar() {
                   <X className="h-4 w-4" />
                 </button>
               </div>
-              <nav className="flex flex-1 flex-col gap-1">
+              <div className="mb-2 px-2">
+                <SearchTrigger />
+              </div>
+              <nav className="flex flex-1 flex-col gap-1 overflow-y-auto no-scrollbar">
                 {items.map((item) => (
                   <button
                     key={item.href}
@@ -130,17 +167,30 @@ export function Sidebar() {
                       setOpen(false);
                       router.push(item.href);
                     }}
+                    aria-current={item.active ? "page" : undefined}
                     className={cn(
                       "flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-colors cursor-pointer",
-                      item.active ? "bg-primary/10 text-primary" : "text-muted hover:bg-surface-2 hover:text-ink",
+                      item.active ? "bg-primary/10 text-primary" : "text-muted hover:bg-surface-2 hover:text-ink active:bg-surface-2",
                     )}
                   >
-                    <item.icon className="h-4 w-4" />
-                    {item.label}
+                    <item.icon className="h-4 w-4 shrink-0" />
+                    <span>{item.label}</span>
+                    {item.badge && (
+                      <span className="ml-auto rounded-full bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold text-accent">
+                        {item.badge}
+                      </span>
+                    )}
                   </button>
                 ))}
               </nav>
-              <div className="mt-4 border-t border-border pt-4">
+              <div className="mt-2 border-t border-border pt-4">
+                <div className="mb-3 flex items-center gap-3 rounded-xl px-2 py-2">
+                  {profile ? <Avatar name={profile.name} /> : <Avatar name="Guest" />}
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-ink">{profile?.name ?? "Guest"}</p>
+                    <p className="truncate text-xs text-muted">{profile?.email ?? "Not signed in"}</p>
+                  </div>
+                </div>
                 <button
                   onClick={logout}
                   className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-muted transition-colors hover:bg-surface-2 hover:text-expense cursor-pointer"
@@ -154,24 +204,42 @@ export function Sidebar() {
         )}
       </AnimatePresence>
 
-      {/* Mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-border bg-surface/85 px-2 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden">
+      {/* Mobile bottom nav - 5 primary tabs + drawer handles the rest (Copilot/Settings via drawer) */}
+      <nav
+        aria-label="Primary"
+        className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-border bg-surface/90 px-1 pb-[env(safe-area-inset-bottom)] pt-1 backdrop-blur-xl lg:hidden"
+      >
         {NAV.slice(0, 5).map((item) => {
-          const active = pathname === item.href;
+          const active = pathname === item.href || pathname.startsWith(item.href + "/");
           return (
             <Link
               key={item.href}
               href={item.href}
+              aria-current={active ? "page" : undefined}
               className={cn(
-                "flex flex-col items-center gap-1 py-2.5 px-3 text-[10px] font-medium transition-colors",
-                active ? "text-primary" : "text-muted",
+                "relative flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl py-2 px-1 text-[10px] font-medium leading-none transition-colors",
+                active ? "text-primary" : "text-muted hover:text-ink active:text-ink",
               )}
             >
-              <item.icon className="h-5 w-5" />
-              {item.label.split(" ")[0]}
+              <item.icon className={cn("h-5 w-5 shrink-0", active && "text-primary")} />
+              <span className="truncate">{item.label.split(" ")[0]}</span>
             </Link>
           );
         })}
+        {/* Overflow trigger to open full drawer where Copilot & Settings live */}
+        <button
+          onClick={() => setOpen(true)}
+          aria-label="More navigation"
+          className={cn(
+            "flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl py-2 px-1 text-[10px] font-medium leading-none transition-colors",
+            (pathname === "/copilot" || pathname === "/settings" || pathname.startsWith("/copilot/") || pathname.startsWith("/settings/"))
+              ? "text-primary"
+              : "text-muted",
+          )}
+        >
+          <Menu className="h-5 w-5" />
+          More
+        </button>
       </nav>
     </>
   );

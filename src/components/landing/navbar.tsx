@@ -28,6 +28,26 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open, handle Escape + auto-close on desktop resize
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const onResize = () => {
+      if (window.innerWidth >= 768) setOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [open]);
+
   return (
     <motion.header
       initial={{ y: -24, opacity: 0 }}
@@ -79,7 +99,9 @@ export function Navbar() {
             <ThemeToggle />
             <button
               onClick={() => setOpen(!open)}
-              aria-label="Toggle menu"
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              aria-controls="mobile-nav"
               className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface-2 cursor-pointer"
             >
               {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -89,35 +111,51 @@ export function Navbar() {
 
         <AnimatePresence>
           {open && (
-            <motion.nav
-              initial={{ opacity: 0, y: -8, height: 0 }}
-              animate={{ opacity: 1, y: 0, height: "auto" }}
-              exit={{ opacity: 0, y: -8, height: 0 }}
-              className="glass-strong mt-2 overflow-hidden rounded-2xl p-3 shadow-glass md:hidden"
-            >
-              {LINKS.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="block rounded-xl px-3 py-3 text-sm font-medium text-ink transition-colors hover:bg-surface-2"
-                >
-                  {l.label}
-                </a>
-              ))}
-              <div className="mt-2 grid grid-cols-2 gap-2 border-t border-border pt-3">
-                <Link href="/login">
-                  <Button variant="secondary" className="w-full">
-                    Log in
-                  </Button>
-                </Link>
-                <Link href="/signup">
-                  <Button className="w-full">
-                    Start free
-                  </Button>
-                </Link>
-              </div>
-            </motion.nav>
+            <>
+              {/* Backdrop - click to close, blurs content behind */}
+              <motion.div
+                className="fixed inset-0 -z-10 bg-black/40 backdrop-blur-sm md:hidden"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setOpen(false)}
+                aria-hidden="true"
+              />
+              <motion.nav
+                id="mobile-nav"
+                role="navigation"
+                aria-label="Mobile navigation"
+                initial={{ opacity: 0, y: -10, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.98 }}
+                transition={{ type: "spring", damping: 28, stiffness: 360 }}
+                className="glass-strong mt-2 overflow-hidden rounded-2xl p-3 shadow-glass md:hidden"
+              >
+                {LINKS.map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    className="block rounded-xl px-3 py-3 text-sm font-medium text-ink transition-colors hover:bg-surface-2 active:bg-surface-2"
+                  >
+                    {l.label}
+                  </a>
+                ))}
+                <div className="mt-2 grid grid-cols-2 gap-2 border-t border-border pt-3">
+                  <Link href="/login" onClick={() => setOpen(false)}>
+                    <Button variant="secondary" className="w-full">
+                      Log in
+                    </Button>
+                  </Link>
+                  <Link href="/signup" onClick={() => setOpen(false)}>
+                    <Button className="w-full">
+                      Start free
+                    </Button>
+                  </Link>
+                </div>
+              </motion.nav>
+            </>
           )}
         </AnimatePresence>
       </div>
